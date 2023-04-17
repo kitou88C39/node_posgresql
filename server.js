@@ -1,10 +1,19 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
+const pool = require('/db');
 
 //APIを作成
+app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Hello Express');
+});
+//User情報を全て取得する
+app.get('/users', (req, res) => {
+  pool.query('SELECT * FROM users', (error, results) => {
+    if (error) throw error;
+    return res.status(200).json(results.row);
+  });
 });
 
 app.listen(PORT, () => {
